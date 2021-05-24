@@ -1,0 +1,109 @@
+
+
+      // 获取数据前设置好接口地址
+      [CRUD.HOOK.beforeRefresh]() {
+        const query = this.query;
+        if (query.type && query.value) {
+
+          this.crud.params[query.type] = query.value
+
+        } else {
+
+          this.crud.params = {};
+
+        }
+        return true
+      }
+
+
+
+== 省市区组件=========
+
+
+          <myaddress :selectSSQ="bindSSQ" :simpleAddress="form.address" @ansyLocation="ansyLocation"/>
+
+
+            bindSSQ: [],
+
+           [CRUD.HOOK.beforeToEdit]() {
+
+
+              this.bindSSQ = [this.form.provinceCode, this.form.cityCode, this.form.countyCode];
+
+
+            },
+            [CRUD.HOOK.beforeToAdd]() {
+
+              this.bindSSQ = null;
+
+            },
+
+
+      ansyLocation(input1, input2) {
+
+        this.form.provinceCode = input1[0];
+        this.form.cityCode = input1[1];
+        this.form.countyCode = input1[2];
+        this.form.address = input2;
+
+
+      },
+
+
+
+==== 上传图片的组件========
+
+
+
+
+
+========== 格式化时间===========
+
+ import  { translateDate } from "@/utils/index";
+
+ methods: {
+      translateDate,
+},
+
+
+
+===============是否指示：====================
+
+    <el-table-column prop="enable" label="是否有效">
+          <template slot-scope="scope">
+            <el-tag
+              :type="scope.row.enable? 'success':'danger' "
+              effect="plain">
+              {{ scope.row.enable? '是':'否'}}
+            </el-tag>
+          </template>，
+        </el-table-column>
+
+
+           <el-form-item label="是否有效" prop="enable">
+               <el-switch  v-model="form.enable"   active-color="#13ce66"  inactive-color="#ff4949" />
+           </el-form-item>
+
+
+
+=====坐标选点组件：========================
+  <mappoint :lnglatStr="form.lngLat"  @sendLocation="sendLocation"> </mappoint>
+            <!-- lnglatStr="113.1094970703125,24.74958855761403" -->
+
+import  mappoint from  "@/components/tmap/mappoint.vue";
+
+ components: {
+      "mappoint": mappoint
+
+    },
+
+
+  sendLocation(point){
+
+        alert("获取的位置是："+JSON.stringify(point));
+
+  }
+
+
+
+
